@@ -1,7 +1,14 @@
-# MAUI Designer - Angular
+# MAUI Designer
+
+Read [AGENTS.md](../AGENTS.md) first for repository-wide engineering standards,
+scope, and local review/publication rules. Read [CONTRIBUTING.md](../CONTRIBUTING.md)
+for branch flow and validation commands. Those files take precedence over the
+component guidance below. This repository also includes a native Windows app and
+a Visual Studio extension; read their READMEs when working in those components.
+
 MAUI Designer is an Angular 18.2.0 web application for designing XAML-based user interfaces with drag-and-drop functionality. It provides a visual XAML editor, element toolbox, properties panel, and real-time preview capabilities for creating MAUI UI layouts in a web browser.
 
-Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
+Verify technical guidance against the checked-in dependency versions and source.
 
 ## Working Effectively
 
@@ -11,15 +18,14 @@ Always reference these instructions first and fallback to search or bash command
 - **Internet Connection**: Initial setup requires network access for package downloads
 
 ### Prerequisites and Setup
-- Install **Node.js** (version 16.x or higher): Download from https://nodejs.org/
-- Install **npm** (version 8.x or higher): Usually comes with Node.js
-- Install **Angular CLI** globally: `npm install -g @angular/cli` (version 18.x)
-- Verify installation: `ng version` should show Angular CLI and core versions
+- Use the Node.js version selected in `.github/workflows/ci.yml` and its bundled npm.
+- Run `npm ci` to install the locked dependencies, including the local Angular CLI.
+- Use `npm run ng -- version` to inspect the installed CLI and framework versions.
 
 ### Building the Application
 - **Bootstrap and build**:
   - `cd /path/to/MAUI-Designer`
-  - `npm install` -- takes 30-90 seconds for package installation
+  - `npm ci` -- installs the locked dependencies; allow time for downloads.
   - `npm run build` or `ng build` -- takes 1-3 minutes. Set timeout to 5+ minutes.
 - **Build for specific configuration**:
   - Development: `ng build` or `ng build --configuration development`
@@ -31,7 +37,7 @@ Always reference these instructions first and fallback to search or bash command
 - The application will launch in a web browser with the XAML designer interface
 
 ## Validation
-- **Automated coverage first**: run `npm run test:headless` and `npm run e2e` after changes.
+- **Automated coverage first**: run `npm run test:headless` and `npm run e2e` for web behavior changes. Follow `CONTRIBUTING.md` for other components and documentation-only changes.
 - **Manual Testing Required**: After making changes, also sanity check these core scenarios:
   1. **XAML Editor**: Write XAML in the text editor and click "Apply" to see the preview
   2. **Drag and Drop**: Select elements from the toolbox and drag them to the design canvas
@@ -55,7 +61,7 @@ Always reference these instructions first and fallback to search or bash command
 - **VS threading rules**: `CompileCheck` sets `TreatWarningsAsErrors`, so the `VSTHRD*`/`VSSDK*` analyzers gate the build. Never use `ThreadHelper.JoinableTaskFactory` for fire-and-forget work in the extension -- its tasks do not block the IDE exiting, which can lose an in-flight buffer write. Use the `AsyncPackage`'s `JoinableTaskFactory` (threaded through `DesignerPane` and `DesignerControl`) and mark intent with `.FileAndForget(...)`; `FileAndForget` on its own does not make `ThreadHelper` safe.
 - **Polling helpers**: the XAML pane and the properties panel re-render from RxJS streams, so assert with `expectXamlToContain`, `xamlWhen`, `expectProperty` or `expectPropertyNumber` instead of one-shot reads, otherwise the tests flake on CI.
 - **Canvas coordinates**: the canvas sits inside a zoomable wrapper - convert client coordinates with `toCanvasPoint` (divide by `viewport.zoom`) in components, and avoid canvas x > ~400 in tests because the right panel overlaps it.
-- **Linting**: Use `ng lint` if ESLint is configured, or standard TypeScript compiler checks
+- **Linting**: No lint script is currently configured. Compilation is a separate check; do not report it as linting.
 
 ### Browser Compatibility
 - **Modern Browsers**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
@@ -145,11 +151,11 @@ typescript (5.5.4)
 - **Angular output path**: `ng build` writes to `dist/angular-designer` (the classic `browser` builder, no `browser/` subfolder). The VSIX embeds that folder as `webview\`, so changing `outputPath` in `angular.json` means changing `AngularDistDirectory` in `MauiDesigner.Vsix.csproj` too.
 
 ## Troubleshooting
-- **Build fails with module not found**: Run `npm install` to ensure all dependencies are installed
+- **Build fails with module not found**: Run `npm ci` to ensure locked dependencies are installed
 - **Port already in use**: The dev server uses port 4200 by default, use `ng serve --port <port>` for different port
 - **TypeScript compilation errors**: Check tsconfig.json settings and ensure Angular version compatibility
 - **UI elements not rendering**: Check browser console for JavaScript errors
-- **Package installation failures**: Delete node_modules/ and package-lock.json, then run `npm install` again
+- **Package installation failures**: Inspect the error and verify Node/npm versions and registry access. Preserve `package-lock.json`; make any required dependency repair a deliberate, reviewed change.
 - **Slow build times**: First builds include package downloads - expect 1-3 minutes initially
 
 ## Additional Information

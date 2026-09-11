@@ -1,8 +1,18 @@
-# MAUI Designer - Angular
+# MAUI Designer
 
-A powerful web-based visual designer for creating MAUI (Microsoft App UI) layouts with drag-and-drop functionality. This Angular application provides an intuitive interface for designing XAML-based user interfaces with real-time preview capabilities.
+An independent fork of [GMPrakhar's MAUI-Designer](https://github.com/GMPrakhar/MAUI-Designer),
+maintained by [hiadamhere](https://github.com/hiadamhere). We are building our own
+direction on the foundation created by GMPrakhar and the upstream contributors.
+The inherited implementation and capabilities described below are our starting
+point; they are not presented as new work by this fork.
 
-**Live demo (web designer):** https://gmprakhar.github.io/MAUI-Designer/ (deployed to GitHub Pages from `main`)
+The repository includes an Angular web designer, a Windows-native MAUI designer,
+and a Visual Studio extension. See the [native app guide](maui-designer-native/README.md)
+and [extension guide](extension/README.md) for their setup and validation steps.
+The feature and usage sections below describe the web designer.
+
+**Upstream web demo:** [GMPrakhar's hosted designer](https://gmprakhar.github.io/MAUI-Designer/).
+This is the upstream deployment and does not represent changes made in this fork.
 
 Development is integrated on `develop`. Changes are promoted to `main` through
 an explicitly approved pull request, and release tags are created only after
@@ -15,10 +25,6 @@ that merge. See [CONTRIBUTING.md](CONTRIBUTING.md).
 > is not a designer itself.
 
 ![MAUI Designer](https://img.shields.io/badge/Angular-18.2.0-red) ![TypeScript](https://img.shields.io/badge/TypeScript-5.5.4-blue) ![License](https://img.shields.io/badge/License-GPLv3-blue)
-
-**Buy me a coffee!**
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/gmprakhar)
 
 ## 🚀 Features
 
@@ -115,26 +121,21 @@ that merge. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Before you begin, ensure you have the following installed:
 
-- **Node.js** (version 16.x or higher)
-- **npm** (version 8.x or higher)
-- **Angular CLI** (version 18.x)
+- **Node.js** matching the version selected in [web CI](.github/workflows/ci.yml)
+- **npm** bundled with that Node.js installation
+- **Angular CLI** installed locally by `npm ci`; a global installation is not required
 
 ## 📦 Installation
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/GMPrakhar/MAUI-Designer.git
+   git clone https://github.com/hiadamhere/MAUI-Designer.git
    cd MAUI-Designer
    ```
 
 2. **Install dependencies:**
    ```bash
-   npm install
-   ```
-
-3. **Install Angular CLI globally (if not already installed):**
-   ```bash
-   npm install -g @angular/cli
+   npm ci
    ```
 
 ## 🚀 Getting Started
@@ -145,8 +146,6 @@ Start the development server:
 
 ```bash
 npm start
-# or
-ng serve
 ```
 
 Navigate to `http://localhost:4200/` in your browser. The application will automatically reload when you make changes to the source files.
@@ -157,8 +156,6 @@ Build the project for production:
 
 ```bash
 npm run build
-# or
-ng build
 ```
 
 The build artifacts will be stored in the `dist/` directory.
@@ -367,23 +364,10 @@ The application follows Angular's standalone components architecture with a serv
 
 ## 🤝 Contributing
 
-We welcome contributions! Please follow these steps:
-
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/your-feature-name`
-3. **Make your changes** and ensure they follow the coding standards
-4. **Test your changes** thoroughly
-5. **Commit your changes**: `git commit -m 'Add some feature'`
-6. **Push to the branch**: `git push origin feature/your-feature-name`
-7. **Open a Pull Request**
-
-### Development Guidelines
-
-- Follow Angular coding style guidelines
-- Write unit tests for new features
-- Ensure all existing tests pass
-- Update documentation as needed
-- Use meaningful commit messages
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for the branch flow, local review process,
+and validation commands. [AGENTS.md](AGENTS.md) defines the shared engineering
+standards for agent-assisted contributions. Contributions to this fork target
+`hiadamhere/MAUI-Designer`.
 
 ## 📋 Technology Stack
 
@@ -416,8 +400,9 @@ generates toolbox entries from the controls in the project's own NuGet packages 
 > web app. It may misbehave or fail outright; don't rely on it for important work, and keep your
 > XAML in source control.
 
-Download **`MauiDesigner.vsix`** from the [latest release][vsix-download] (also linked from the
-header of the [live demo](https://gmprakhar.github.io/MAUI-Designer/)), then:
+The [upstream beta download][vsix-download] is published by GMPrakhar; it does
+not contain this fork's changes. To build this fork, follow the
+[extension build instructions](extension/README.md). To try the upstream binary:
 
 1. Close Visual Studio.
 2. Double-click the downloaded `.vsix` and complete the VSIX installer.
@@ -458,9 +443,15 @@ those statements.
 The dependencies keep their own licences (Angular and the rest are MIT); this
 applies only to the code in this repository.
 
-## 👨‍💻 Author
+## 👨‍💻 Attribution and maintenance
 
-**GMPrakhar** - [GitHub Profile](https://github.com/GMPrakhar)
+- **Original project:** [GMPrakhar](https://github.com/GMPrakhar) and the
+  contributors to [GMPrakhar/MAUI-Designer](https://github.com/GMPrakhar/MAUI-Designer).
+- **This independent fork:** [hiadamhere/MAUI-Designer](https://github.com/hiadamhere/MAUI-Designer),
+  maintained by [hiadamhere](https://github.com/hiadamhere).
+
+This fork retains the upstream Git history and license. Its direction and changes
+are maintained independently; upstream authorship is preserved and acknowledged.
 
 ## 🙏 Acknowledgments
 
